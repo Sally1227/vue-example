@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script type="text/javascript" src="js/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+	<input type="text" v-model="message" />
+	<h3>{{ message | capitalize }}</h3>
+	<p v-bind:title="msg">
+		Hover your mouse over me for a few seconds to see my dynamically bound title!
+	</p>
+	<p v-html="msg"></p>
+	<p v-html="msg1"></p>
+	<input type="checkbox" name="" v-model="seen" />
+	<p v-if="seen" for="seen">Now you see me</p>
+
+	<ul>
+		<li v-for='todo in todos'>
+			{{todo.text}} 
+		</li>
+	</ul>
+
+	<ul>
+		<todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
+	</ul>
+	<button v-on:click="reverseMsg">msg reverse</button>
+	<!--<ol>
+		<comp-item v-for='item in groceryList' v-bind:comp='item'></comp-item>
+	</ol>
+	<h2>{{now}}</h2>
+	<label class="label label-warning">{{fullName}}</label>-->
+</div>
+
+<!--<div id="app-7">
+	<ol>
+		<comp-item v-for='item in groceryList' v-bind:comp='item'></comp-item>
+	</ol>
+	<div>
+		<list-item v-for='item in bookList' v-bind:list='item'></list-item>
+	</div>
+	<p class="text-danger">{{fullName}}</p>
+	<label class="label" :class="classObj">{{fullName}}</label>
+	<span :class="classObject">{{fullName}}</span>
+
+
+</div>-->
+
+<!--<div class="row" id="net">
+    <div class="col-xs-6 col-md-4 form-group">
+        <label class="col-sm-4 control-label text-right">净值</label>
+        <div class="col-sm-8">
+            <select class="form-control input-sm" v-model="selected">
+                <option v-for="item in netValueList" v-bind:value="{text: item.text, value1: item.value1, value2: item.value2, isShow1: item.isShow1, isShow2: item.isShow2}">{{item.text}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-4 form-group" v-if="selected.isShow1">
+        <label class="col-sm-4 control-label text-right">指标值（{{selected.value1}}）</label>
+        <div class="col-sm-8 relative">
+            <input type="text" class="form-control input-sm">
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-4 form-group" v-if="selected.isShow2">
+        <label class="col-sm-4 control-label text-right">指标值（{{selected.value2}}）</label>
+        <div class="col-sm-8 relative">
+            <input type="text" class="form-control input-sm">
+        </div>
+    </div>
+</div>-->
+
+<!--<div id="vm1">
+	<input type="number" name="" v-model.number="age">
+
+	<input type="text" name="" v-model.trim="age">
+	<p>{{age}}</p>
+</div>-->
+
+<script type="text/javascript">
+	Vue.component('todo-item', {
+	    props: ['todo'],
+	    template: '<li>{{todo.text}}</li>'
+	})
+
+	var app = new Vue({
+		el: '#app',
+		data: {
+            message: 'hello vue!',
+			msg: '鼠标提示',
+			msg1: '页面加载预 ' + new Date().toLocaleString(),
+			seen: true,
+			todos: [
+				{text: '学习 JavaScript'},
+				{text: '学习 Vue'},
+				{text: '整个牛项目'}
+			]
+		},
+		methods: {
+            reverseMsg: function () {
+				this.message = this.message.split('').reverse().join('')
+            }
+		}
+	})
+	app.message = '新消息'
+	app.todos.push({text: '新项目'})
+
+
+
+//创建净值下拉选项
+  /*  var vm = new Vue({
+        el: '#net',
+        data: {
+        	selected: {text: '不控制', value1: '', value2: '', isShow1: false, isShow2: false},
+            netValueList: [
+                { text: '不控制', value1: '', value2: '', isShow1: false, isShow2: false},
+                { text: '大于', value1: '>', value2: '', isShow1: true, isShow2: false },
+                { text: '小于', value1: '<', value2: '', isShow1: true, isShow2: false },
+                { text: '大于等于', value1: '>=', value2: '', isShow1: true, isShow2: false },
+                { text: '小于等于', value1: '<=', value2: '', isShow1: true, isShow2: false },
+                { text: '范围控制（<,>=）', value1: '<', value2: '>=', isShow1: true, isShow2: true },
+                { text: '范围控制（<=,>）', value1: '<=', value2: '>', isShow1: true, isShow2: true },
+                { text: '范围控制(<=,>=)', value1: '<=', value2: '>=', isShow1: true, isShow2: true },
+                { text: '范围控制(<,>)', value1: '<', value2: '>', isShow1: true, isShow2: true }
+            ]
+        }
+    });*/
+
+	
+//创建组件
+	/*Vue.component('comp-item', {
+		props: ['comp'],
+		template: '<li>{{comp.text}}</li>'
+	})
+	Vue.component('list-item', {
+		props: ['list'],
+		template: '<h4>{{list.name}} learns {{list.book}}</h4>'
+	})
+
+	var app = new Vue({ 
+		el: '#app',
+		data: {
+			message: 'hello vue',
+			msg: 'You loaded this page on' + new Date() + Date.now(), 
+			seen: true,
+			todos: [
+				{ text: 'Learn JavaScript' },
+			    { text: 'Learn Vue' },
+			    { text: 'Build something awesome' }
+			],
+			groceryList: [
+		      	{ text: 'Vegetables-1' },
+		      	{ text: 'Cheese-1' },
+		      	{ text: 'Whatever else humans are supposed to eat' }
+		    ],
+		    fristName: 'Foo',
+		    lastName: 'Bar'
+		},
+		computed: {
+		 	now: function () {
+		    return Date.now()
+		  	},
+		  	fullName: function() {
+		  		return this.fristName + this.lastName
+		  	}
+		},
+		methods: {
+				reverseMsg: function() {
+					this.msg = this.msg.split('').reverse().join('')
+				}
+		},
+		 filters: {
+		    capitalize: function (value) {
+		      if (!value) return ''
+		      value = value.toString()
+		  console.log(value.slice(1)); 
+		      return value.charAt(0).toUpperCase() + value.slice(1)
+		    }
+		}
+	});
+	
+	var app7 = new Vue({
+	  	el: '#app-7',
+	 	data: {
+		    groceryList: [
+		      { text: 'Vegetables' },
+		      { text: 'Cheese' },
+		      { text: 'Whatever else humans are supposed to eat' }
+		    ],
+		    bookList: [
+		    	{ name: 'Lucy', book: 'java'},
+		    	{ name: 'Lily ', book: 'C++'}
+		    ],
+		    fristName: 'Foo',
+		    lastName: 'Bar',
+		    classObj: {
+		    	'text-danger': true,
+		    	'label-danger': true
+		    },
+		    isActive: true,
+		    error: true
+	  	},
+	  	computed: {
+	  		fullName: {
+	  			get:  function() {
+	  				return this.fristName + this.lastName
+	  			},
+	  			set: function(newValue) {
+	  				var names = newValue.split(" ");
+	  				this.fristName = names[0];
+	  				this.lastName = names[names.length - 1];
+	  			}
+	  		},
+	  		classObject: function () {
+	  			return {
+	  				active: this.isActive && !this.error,
+	  				'text-warning': this.error ,
+	  			}
+	  		}
+	  	}
+})
+
+
+	var vm1 = new Vue({
+		el: '#vm1',
+		data: {
+			age: 12
+		}, 
+		created: function() {
+			console.log(this.a)
+		}
+	})*/
+ 
+
+</script>
+</body>
+</html>
