@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script type="text/javascript" src="js/vue.min.js"></script>
+
+    <style type="text/css">
+      .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s
+      }
+      .fade-enter, .fade-leave-active {
+        opacity: 0
+      }
+    </style>
+</head>
+<body>
+
+<div id="todo-list-example">
+  <input
+    v-model="newTodoText"
+    v-on:keyup.enter="addNewTodo"
+    placeholder="Add a todo"
+  >
+  <ul>
+    <li
+      is="todo-item"
+      v-for="(todo, index) in todos"
+      v-bind:title="todo"
+      v-on:remove="todos.splice(index, 1)"
+    ></li>
+  </ul>
+
+  <ul>
+      <li v-for="n in evenNumbers">{{n}}</li>
+  </ul>
+  <ul>
+    <li v-for="n in even(numbers)">{{n}}</li>
+  </ul>
+
+  <button v-on:click="warn('Form cannot be submitted yet.', $event)">Submit</button>
+
+
+<span>Multiline message is:</span>
+<p style="white-space: pre">{{ message }}</p>
+<br>
+  <textarea v-model="message" placeholder="add multiple lines"></textarea>
+
+</div>
+
+<div id="myForm">
+  <input type="checkbox" id="jack" value="Jack" v-model="dateObj.checkedNames">
+<label for="jack">Jack</label>
+<input type="checkbox" id="john" value="John" v-model="dateObj.checkedNames">
+<label for="John">John</label>
+<input type="checkbox" id="mike" value="Mike" v-model="dateObj.checkedNames">
+<label for="mike">Mike</label>
+<br>
+<p>Checked names: {{ dateObj.checkedNames }}</p>
+
+<input type="radio" id="one" value="One" v-model="dateObj.picked">
+<label for="one">One</label>
+<br>
+<input type="radio" id="two" value="Two" v-model="dateObj.picked">
+<label for="two">Two</label>
+<br>
+<p>Picked: {{ dateObj.picked }}</p>
+
+<select v-model="dateObj.selected">
+  <option>A</option>
+  <option>B</option>
+  <option>C</option>
+</select>
+<p>Selected: {{ dateObj.selected }}</p>
+
+<select v-model="dateObj.selecteds" multiple>
+  <option>A</option>
+  <option>B</option>
+  <option>C</option>
+</select>
+<br>
+<p>Selected: {{ dateObj.selecteds }}</p>
+
+<button @click="getDate" class="btn btn-sm btn-danger">提交数据</button>
+
+</div>
+
+
+<div style="margin: 20px" id="demo">
+  <button v-on:click="show = !show">
+    Toggle
+  </button>
+  <transition name="fade">
+    <p v-if="show">hello</p>
+  </transition>
+</div>
+
+
+<script type="text/javascript">
+
+new Vue({
+  el: '#demo',
+  data: {
+    show: true
+  }
+})
+
+var app = new Vue({
+  el: '#myForm',
+  data: {
+    dateObj: {
+      checkedNames : [],
+      picked: '',
+      selected: 'A',
+      selecteds: ''
+    }
+  },
+  methods: {
+    getDate: function () {
+      console.log(this.dateObj)
+    }
+  }
+})
+
+
+
+  Vue.component('todo-item', {
+      template: '\
+        <li>\
+          {{ title }}\
+          <button v-on:click="$emit(\'remove\')">X</button>\
+        </li>\
+      ',
+      props: ['title']
+})
+
+var vm =  new Vue({
+    el: '#todo-list-example',
+    data: {
+        newTodoText: '',
+        todos: [
+            'Do the dishes',
+            'Take out the trash',
+            'Mow the lawn'
+        ],
+        numbers: [ 1, 2, 3, 4, 5 ],
+        message: ''
+    },
+    methods: {
+        addNewTodo: function () {
+            this.todos.push(this.newTodoText)
+            this.newTodoText = ''
+        },
+        even: function (numbers) {
+            return numbers.filter(function (number) {
+              return number % 3 === 0
+            })
+        },
+        warn: function (message, event) {
+          // 现在我们可以访问原生事件对象
+          if (event) event.preventDefault()
+            console.log(event)
+          alert(message)
+        }
+    },
+    computed: {
+        evenNumbers: function () {
+            return this.numbers.filter(function (number) {
+                return number % 2 === 0
+            })
+        }
+    }
+})
+
+</script>
+</body>
+</html>
